@@ -1,13 +1,34 @@
 -- init_db.sql
-CREATE TABLE IF NOT EXISTS worker (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    birthday DATE,
-    level VARCHAR(20) NOT NULL,
-    salary INT
+
+-- Таблиця для працівників
+CREATE TABLE worker (
+    ID INT PRIMARY KEY,
+    NAME VARCHAR(1000) NOT NULL CHECK (LENGTH(NAME) >= 2 AND LENGTH(NAME) <= 1000),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL VARCHAR(20) NOT NULL CHECK (LEVEL IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    SALARY INT CHECK (SALARY >= 100 AND SALARY <= 100000)
 );
 
-INSERT INTO worker (name, birthday, level, salary) VALUES
-    ('John Doe', '2000-01-07', 'Senior', 5000),
-    ('Sara Conor', '1995-05-15', 'Junior', 3000),
-    ('Bob Johnson', '1995-08-10', 'Junior', 3000),
+-- Таблиця для клієнтів
+CREATE TABLE client (
+    ID INT PRIMARY KEY,
+    NAME VARCHAR(1000) NOT NULL CHECK (LENGTH(NAME) >= 2 AND LENGTH(NAME) <= 1000)
+);
+
+-- Таблиця для проєктів
+CREATE TABLE project (
+    ID INT PRIMARY KEY,
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES client(ID)
+);
+
+-- Таблиця для назначення працівників на проєкти
+CREATE TABLE project_worker (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID),
+    FOREIGN KEY (PROJECT_ID) REFERENCES project(ID),
+    FOREIGN KEY (WORKER_ID) REFERENCES worker(ID)
+);
