@@ -1,15 +1,11 @@
--- print_project_prices.sql
-
--- Вивести вартість кожного проєкту
 SELECT
-    p.NAME AS PROJECT_NAME,
-    SUM(w.SALARY * DATEDIFF(pr.FINISH_DATE, pr.START_DATE)) AS PRICE
+    project.NAME AS project_name,
+    SUM(worker.SALARY * DATEDIFF(project.FINISH_DATE, project.START_DATE)) AS project_price
 FROM
-    project p
-JOIN project_worker pw ON p.ID = pw.PROJECT_ID
-JOIN worker w ON pw.WORKER_ID = w.ID
-JOIN project pr ON pw.PROJECT_ID = pr.ID
+    project
+JOIN project_worker ON project.id = project_worker.project_id
+JOIN worker ON project_worker.worker_id = worker.id
 GROUP BY
-    p.NAME
+    project.NAME
 ORDER BY
-    PRICE DESC;
+    project_price DESC;
