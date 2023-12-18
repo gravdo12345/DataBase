@@ -1,8 +1,9 @@
+-- Знайти найдовший проєкт
 SELECT
-    project.NAME AS project_name,
-    DATEDIFF(project.FINISH_DATE, project.START_DATE) AS project_duration
+    pr.ID AS PROJECT_ID,
+    DATEDIFF(pr.FINISH_DATE, pr.START_DATE) AS DURATION_IN_DAYS
 FROM
-    project
+    project pr
 ORDER BY
-    project_duration DESC
+    DURATION_IN_DAYS DESC
 LIMIT 1;
